@@ -1,8 +1,12 @@
 "import ./Card.css"
 
-const Card = () => {
+const Card = ({ value, label }) => {
     return (
         <>
+            <div className="card-container">
+                <div>{value}</div>
+                <div>{label}</div>
+            </div>
         </>
     )
 }

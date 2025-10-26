@@ -8,7 +8,9 @@ import NavBar from "./components/NavBar"
 function App() {
     const API_KEY = import.meta.env.VITE_APP_API_KEY
     const [list, setList] = useState(null)
-    const [city, setCity] = useState("Cupertino")
+    const [location, setLocation] = useState("Cupertino,California")
+    const [searchInput, setSearchInput] = useState("")
+    const [filteredList, setFilteredList] = useState([])
     const today = new Date();
     const endDate = today.toISOString().slice(0, 10); // YYYY-MM-DD
     let twoWeeksPrior = endDate.slice(0, 8)
@@ -19,17 +21,34 @@ function App() {
         twoWeeksPrior += String((Number(endDate.slice(8)) - 14));
 
     const startDate = twoWeeksPrior // YYYY-MM-DD
-    {
-        useEffect(() => {
+
+    useEffect(() => {
+        const fetchWeatherData = async () => {
+            const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?start_date=${startDate}&end_date=${endDate}&city=${location}&key=${API_KEY}`)
+            const json = await response.json()
+            setList(json)
+        }
+        fetchWeatherData().catch(console.error)
+    }, []) // [] - run once when the component is first rendered
+
+    const searchLocation = () => {
+        if (searchInput !== "") {
             const fetchWeatherData = async () => {
-                const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?start_date=${startDate}&end_date=${endDate}&city=${city},California&key=${API_KEY}`)
+                const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?start_date=${startDate}&end_date=${endDate}&city=${searchInput}&key=${API_KEY}`)
                 const json = await response.json()
-                setList(json)
+                setFilteredList(json)
             }
             fetchWeatherData().catch(console.error)
-        }, []) // [] - run once when the component is first rendered
-        console.log(list)
+        } else { // Cupertino, California is default
+            setFilteredList(list)
+        }
+        console.log(filteredList)
     }
+    
+    useEffect(() => {
+        console.log("Filtered List Updated:", filteredList)
+    }, [filteredList])
+    
     return (
         <>
             <h1>{endDate}</h1>
@@ -46,7 +65,16 @@ function App() {
                         <Card />
                         <Card />
                     </div>
-                    <List />
+                    <input
+                        type="text"
+                        placeholder="City, State"
+                        onChange={(e) => setSearchInput(e.target.value)}
+                    />
+                    <button onClick={searchLocation}></button>
+                    {searchInput.length > 0
+                        ? <List data={filteredList} />
+                        : <List data={list} />
+                    }
                 </div>
             </div>
         </>
