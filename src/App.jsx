@@ -4,11 +4,10 @@ import Card from "./components/Card"
 import Header from "./components/Header"
 import List from "./components/List"
 import NavBar from "./components/NavBar"
-
+// 2 hours spent as of 10-26-2025 1:00 PM
 function App() {
     const API_KEY = import.meta.env.VITE_APP_API_KEY
     const [list, setList] = useState(null)
-    const [location, setLocation] = useState("Cupertino,California")
     const [searchInput, setSearchInput] = useState("")
     const [filteredList, setFilteredList] = useState([])
     const today = new Date();
