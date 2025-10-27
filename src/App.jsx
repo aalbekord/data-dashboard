@@ -4,12 +4,13 @@ import Card from "./components/Card"
 import Header from "./components/Header"
 import List from "./components/List"
 import NavBar from "./components/NavBar"
-// 2 hours spent as of 10-26-2025 1:00 PM
+// 6 hours spent as of 10-27-2025 5:00 PM
 function App() {
     const API_KEY = import.meta.env.VITE_APP_API_KEY
     const [list, setList] = useState(null)
     const [searchInput, setSearchInput] = useState("")
-    const [filteredList, setFilteredList] = useState([])
+    const [filteredList, setFilteredList] = useState(null)
+    const [filterInput, setFilterInput] = useState("")
 
     const today = new Date();
     const endDate = today.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -34,7 +35,23 @@ function App() {
             fetchWeatherData().catch(console.error)
         }
         setSearchInput("") // clear the input field
-        console.log(list)
+        searchDate("")
+    }
+
+    const searchDate = (searchValue) => {
+        if (searchValue !== "") {
+            // Filter the data array based on the date attribute
+            const filteredData = list["data"].filter((item) =>
+                item.datetime === searchValue // Compare the date attribute with the filterInput
+            );
+            if (filteredData.length > 0)
+                setFilteredList(filteredData);
+            else
+                setFilterInput(null)
+        } else {
+            setFilteredList(null);
+        }
+        setFilterInput(""); // Clear the input field
     }
 
     const calculateAverage = (category) => {
@@ -49,6 +66,9 @@ function App() {
         console.log("List Updated:", list)
     }, [list])
 
+    useEffect(() => {
+        console.log("FilteredList Updated:", filteredList)
+    }, [filteredList])
     return (
         <>
             <div className="whole-page">
@@ -75,9 +95,20 @@ function App() {
                         />
                         <button type="button" onClick={searchLocation} className="search-button">Search</button>
                     </div>
+                    <input
+                        type="text"
+                        placeholder="YYYY-MM-DD"
+                        value={filterInput}
+                        onChange={(e => setFilterInput(e.target.value))}
+                    />
+                    <button type="button" onClick={() => searchDate(filterInput)} className="search-button">Search</button>
                     {
-                        list !== null ?
-                            <List data={list["data"]} /> : <div />
+                        filteredList !== null
+                            ? <List data={filteredList} />
+                            : (list !== null
+                                ? <List data={list["data"]} />
+                                : <div />
+                            )
                     }
                 </div>
             </div>
