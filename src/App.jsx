@@ -65,13 +65,16 @@ function App() {
                                 <Card value={`${calculateAverage("wind_spd")}mph`} label='Avg. Wind' />
                             </div> : <div />
                     }
-                    <input
-                        type="text"
-                        placeholder="City, State"
-                        value={searchInput} // input is cleared on click
-                        onChange={(e) => setSearchInput(e.target.value)}
-                    />
-                    <button type="button" onClick={searchLocation}>Search</button>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="City, State"
+                            value={searchInput} // input is cleared on click
+                            onChange={(e) => setSearchInput(e.target.value)}
+                            className="search-bar"
+                        />
+                        <button type="button" onClick={searchLocation} className="search-button">Search</button>
+                    </div>
                     {
                         list !== null ?
                             <List data={list["data"]} /> : <div />

@@ -1,4 +1,4 @@
-"import ./Card.css"
+import "./Card.css"
 
 const Card = ({ value, label }) => {
     return (
