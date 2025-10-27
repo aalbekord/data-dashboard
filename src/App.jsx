@@ -10,20 +10,14 @@ function App() {
     const [list, setList] = useState(null)
     const [searchInput, setSearchInput] = useState("")
     const [filteredList, setFilteredList] = useState([])
+
     const today = new Date();
     const endDate = today.toISOString().slice(0, 10); // YYYY-MM-DD
-    let twoWeeksPrior = endDate.slice(0, 8)
-
-    if (Number(endDate.slice(8)) - 14 < 0)
-        twoWeeksPrior += String(((Number(endDate.slice(8)) - 14) + 30));
-    else
-        twoWeeksPrior += String((Number(endDate.slice(8)) - 14));
-
-    const startDate = twoWeeksPrior // YYYY-MM-DD
+    const startDate = new Date(new Date(today).setDate(today.getDate() - 14)).toISOString().slice(0, 10)
 
     useEffect(() => {
         const fetchWeatherData = async () => {
-            const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?start_date=${startDate}&end_date=${endDate}&city=${location}&key=${API_KEY}`)
+            const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?start_date=${startDate}&end_date=${endDate}&city=Cupertino,California&key=${API_KEY}`)
             const json = await response.json()
             setList(json)
         }
@@ -35,44 +29,52 @@ function App() {
             const fetchWeatherData = async () => {
                 const response = await fetch(`https://api.weatherbit.io/v2.0/history/daily?start_date=${startDate}&end_date=${endDate}&city=${searchInput}&key=${API_KEY}`)
                 const json = await response.json()
-                setFilteredList(json)
+                setList(json)
             }
             fetchWeatherData().catch(console.error)
-        } else { // Cupertino, California is default
-            setFilteredList(list)
         }
-        console.log(filteredList)
+        setSearchInput("") // clear the input field
+        console.log(list)
     }
-    
+
+    const calculateAverage = (category) => {
+        let total = 0
+        for (let i = 0; i < list["data"].length; i++) {
+            total += list["data"][i][category]
+        }
+        return (Math.floor((total / list["data"].length) * 10)) / 10
+    }
+
     useEffect(() => {
-        console.log("Filtered List Updated:", filteredList)
-    }, [filteredList])
-    
+        console.log("List Updated:", list)
+    }, [list])
+
     return (
         <>
-            <h1>{endDate}</h1>
-            <h1>{startDate}</h1>
-
             <div className="whole-page">
                 <div className="side-bar">
                     <Header />
                     <NavBar />
                 </div>
                 <div className="main-page">
-                    <div className="card-container">
-                        <Card />
-                        <Card />
-                        <Card />
-                    </div>
+                    {
+                        list !== null ?
+                            <div className="card-container">
+                                <Card value={list["city_name"]} label={`${list["city_name"]}, ${list["state_code"]}`} />
+                                <Card value={`${calculateAverage("temp")}°C`} label='Avg. Temp' />
+                                <Card value={`${calculateAverage("wind_spd")}mph`} label='Avg. Wind' />
+                            </div> : <div />
+                    }
                     <input
                         type="text"
                         placeholder="City, State"
+                        value={searchInput} // input is cleared on click
                         onChange={(e) => setSearchInput(e.target.value)}
                     />
-                    <button onClick={searchLocation}></button>
-                    {searchInput.length > 0
-                        ? <List data={filteredList} />
-                        : <List data={list} />
+                    <button type="button" onClick={searchLocation}>Search</button>
+                    {
+                        list !== null ?
+                            <List data={list["data"]} /> : <div />
                     }
                 </div>
             </div>

@@ -3,7 +3,7 @@ import "./Header.css"
 const Header = () => {
     return (
         <>
-            <h1>EyesInTheSky</h1>
+            <h1>🌙 Sky Reader</h1>
         </>
     )
 }

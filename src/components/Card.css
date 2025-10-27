@@ -1,0 +1,41 @@
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    /* Set a fixed width */
+    height: 120px;
+    /* Set a fixed height */
+    background-color: #f9f9f9;
+    /* Light gray background */
+    border: 1px solid #ddd;
+    /* Subtle border */
+    border-radius: 8px;
+    /* Rounded corners */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Subtle shadow */
+    margin: 10px;
+    /* Space between cards */
+    font-family: Arial, sans-serif;
+    /* Simple font */
+    text-align: center;
+    /* Center text */
+    color: #333;
+    /* Dark gray text */
+}
+
+.container.value {
+    font-size: 1.5rem;
+    /* Larger font for value */
+    font-weight: bold;
+    margin-bottom: 8px;
+    /* Space between value and label */
+}
+
+.container.label {
+    font-size: 1rem;
+    /* Smaller font for label */
+    color: #666;
+    /* Lighter gray for label */
+}
