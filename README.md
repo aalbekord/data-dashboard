@@ -58,7 +58,7 @@ Video created with Loom
 
 ## Notes
 
-Describe any challenges encountered while building the app.
+It was troublesome to re-implement filtering but I am more confident in my ability to work with information returned from APIs than I was before
 
 ## License
 
