@@ -35,7 +35,7 @@ function App() {
             fetchWeatherData().catch(console.error)
         }
         setSearchInput("") // clear the input field
-        searchDate("")
+        setFilteredList(null) // reset filter
     }
 
     const searchDate = (searchValue) => {
