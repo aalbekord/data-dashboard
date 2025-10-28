@@ -4,7 +4,7 @@ import Card from "./components/Card"
 import Header from "./components/Header"
 import List from "./components/List"
 import NavBar from "./components/NavBar"
-// 6 hours spent as of 10-27-2025 5:00 PM
+
 function App() {
     const API_KEY = import.meta.env.VITE_APP_API_KEY
     const [list, setList] = useState(null)
@@ -42,7 +42,7 @@ function App() {
         if (searchValue !== "") {
             // Filter the data array based on the date attribute
             const filteredData = list["data"].filter((item) =>
-                item.datetime === searchValue // Compare the date attribute with the filterInput
+                item.datetime.indexOf(searchValue) !== -1
             );
             if (filteredData.length > 0)
                 setFilteredList(filteredData);
@@ -89,19 +89,22 @@ function App() {
                         <input
                             type="text"
                             placeholder="City, State"
-                            value={searchInput} // input is cleared on click
+                            value={searchInput}
                             onChange={(e) => setSearchInput(e.target.value)}
                             className="search-bar"
                         />
                         <button type="button" onClick={searchLocation} className="search-button">Search</button>
                     </div>
-                    <input
-                        type="text"
-                        placeholder="YYYY-MM-DD"
-                        value={filterInput}
-                        onChange={(e => setFilterInput(e.target.value))}
-                    />
-                    <button type="button" onClick={() => searchDate(filterInput)} className="search-button">Search</button>
+                    <div>
+                        <input
+                            type="text"
+                            placeholder="YYYY-MM-DD"
+                            value={filterInput}
+                            onChange={(e => setFilterInput(e.target.value))}
+                            className="search-bar"
+                        />
+                        <button type="button" onClick={() => searchDate(filterInput)} className="search-button">Filter</button>
+                    </div>
                     {
                         filteredList !== null
                             ? <List data={filteredList} />
