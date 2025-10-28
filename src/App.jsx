@@ -10,7 +10,8 @@ function App() {
     const [list, setList] = useState(null)
     const [searchInput, setSearchInput] = useState("")
     const [filteredList, setFilteredList] = useState(null)
-    const [filterInput, setFilterInput] = useState("")
+    const [cityInput, setCityInput] = useState("")
+    const [uvInput, setUvInput] = useState("")
 
     const today = new Date();
     const endDate = today.toISOString().slice(0, 10); // YYYY-MM-DD
@@ -40,19 +41,47 @@ function App() {
 
     const searchDate = (searchValue) => {
         if (searchValue !== "") {
-            // Filter the data array based on the date attribute
-            const filteredData = list["data"].filter((item) =>
+            // Use filteredList if it exists, otherwise use the full list
+            const dataToFilter = filteredList && filteredList.length > 0 ? filteredList : list["data"];
+
+            // Filter the data based on the searchValue
+            const filteredData = dataToFilter.filter((item) =>
                 item.datetime.indexOf(searchValue) !== -1
             );
-            if (filteredData.length > 0)
+
+            // Update the filteredList state
+            if (filteredData.length > 0) {
                 setFilteredList(filteredData);
-            else
-                setFilterInput(null)
+            } else {
+                setFilteredList(null); // No matches found
+            }
         } else {
-            setFilteredList(null);
+            setFilteredList(null); // Reset the filteredList if searchValue is empty
         }
-        setFilterInput(""); // Clear the input field
+        setCityInput("")
     }
+
+    const searchUv = (searchValue) => {
+        if (searchValue !== "") {
+            // Use filteredList if it exists, otherwise use the full list
+            const dataToFilter = filteredList && filteredList.length > 0 ? filteredList : list["data"];
+
+            // Filter the data based on the UV value
+            const filteredData = dataToFilter.filter((item) =>
+                item.max_uv < Number(searchValue)
+            );
+
+            // Update the filteredList state
+            if (filteredData.length > 0) {
+                setFilteredList(filteredData);
+            } else {
+                setFilteredList(null); // No matches found
+            }
+        } else {
+            setFilteredList(null); // Reset the filteredList if searchValue is empty
+        }
+        setUvInput("")
+    };
 
     const calculateAverage = (category) => {
         let total = 0
@@ -99,11 +128,19 @@ function App() {
                         <input
                             type="text"
                             placeholder="YYYY-MM-DD"
-                            value={filterInput}
-                            onChange={(e => setFilterInput(e.target.value))}
+                            value={cityInput}
+                            onChange={(e => setCityInput(e.target.value))}
                             className="search-bar"
                         />
-                        <button type="button" onClick={() => searchDate(filterInput)} className="search-button">Filter</button>
+                        <button type="button" onClick={() => searchDate(cityInput)} className="search-button">Filter Date</button>
+                        <input
+                            type="text"
+                            placeholder="Max UV"
+                            value={uvInput}
+                            onChange={(e => setUvInput(e.target.value))}
+                            className="search-bar"
+                        />
+                        <button type="button" onClick={() => searchUv(uvInput)} className="search-button">Filter UV</button>
                     </div>
                     {
                         filteredList !== null
