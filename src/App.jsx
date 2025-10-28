@@ -123,8 +123,6 @@ function App() {
                             className="search-bar"
                         />
                         <button type="button" onClick={searchLocation} className="search-button">Search</button>
-                    </div>
-                    <div>
                         <input
                             type="text"
                             placeholder="YYYY-MM-DD"
