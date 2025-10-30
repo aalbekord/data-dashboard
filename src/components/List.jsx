@@ -1,4 +1,5 @@
 import "./List.css";
+import { Link } from "react-router"
 
 const List = ({ data }) => {
     return (
@@ -16,7 +17,9 @@ const List = ({ data }) => {
                 <tbody>
                     {data.map((item, index) => (
                         <tr key={index}>
-                            <td>{item["datetime"]}</td>
+                            <td>
+                                <Link to={`/details/${index}`}>{item["datetime"]}</Link>
+                            </td>
                             <td>{item["temp"]}</td>
                             <td>{item["wind_spd"]}</td>
                             <td>{item["snow"]}</td>

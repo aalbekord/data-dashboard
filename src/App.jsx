@@ -1,9 +1,7 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import Card from "./components/Card"
-import Header from "./components/Header"
 import List from "./components/List"
-import NavBar from "./components/NavBar"
 
 function App() {
     const API_KEY = import.meta.env.VITE_APP_API_KEY
@@ -89,7 +87,7 @@ function App() {
             total += list["data"][i][category]
         }
         return (Math.floor((total / list["data"].length) * 10)) / 10
-    }
+    }    
     return (
         <>
             <div className="whole-page">
