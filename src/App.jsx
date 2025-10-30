@@ -91,13 +91,6 @@ function App() {
         return (Math.floor((total / list["data"].length) * 10)) / 10
     }
 
-    useEffect(() => {
-        console.log("List Updated:", list)
-    }, [list])
-
-    useEffect(() => {
-        console.log("FilteredList Updated:", filteredList)
-    }, [filteredList])
     return (
         <>
             <div className="whole-page">
