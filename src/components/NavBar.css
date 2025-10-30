@@ -1,0 +1,7 @@
+.nav-bar {
+    display: flex;
+    justify-content: space-between;
+    width: 97%;
+    overflow-x: hidden;
+    box-sizing: border-box;
+}

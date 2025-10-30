@@ -90,14 +90,9 @@ function App() {
         }
         return (Math.floor((total / list["data"].length) * 10)) / 10
     }
-
     return (
         <>
             <div className="whole-page">
-                <div className="side-bar">
-                    <Header />
-                    <NavBar />
-                </div>
                 <div className="main-page">
                     {
                         list !== null ?
