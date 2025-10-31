@@ -1,8 +1,12 @@
-import { useParams } from "react-router"
+import { useParams, useLocation } from "react-router-dom"
 
-function DetailView({ data }) {
+function DetailView() {
     const { index } = useParams()
-    const item = data[index]
+    const location = useLocation()
+    const item = location.state?.item
+
+    if (!item) return <div>No data available</div>
+
     return (
         <>
             <h1>Details for {item["datetime"]}</h1>
@@ -11,7 +15,6 @@ function DetailView({ data }) {
             <p>Snow: {item["snow"]}</p>
             <p>Max UV: {item["max_uv"]}</p>
         </>
-
     )
 }
 
